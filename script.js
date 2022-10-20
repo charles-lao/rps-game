@@ -44,10 +44,11 @@ playRound = (playerChoice, computerChoice) => {
             case 'rock':
 
                 if(computerChoice === 'paper'){
-                    console.log(`You Lose! ${computerChoice} beats ${playerChoice}!`);
+                    messageContainer.textContent = `You Lose! ${computerChoice} beats ${playerChoice}!`;
                     computerScore++;
                 } else if (computerChoice == 'scissors'){
                     console.log(`You Won! ${playerChoice} beats ${computerChoice}`);
+                    messageContainer.textContent = `You Won! ${playerChoice} beats ${computerChoice}`;
                     playerScore++;
                 }
 
@@ -56,10 +57,10 @@ playRound = (playerChoice, computerChoice) => {
             case 'paper':
 
                 if(computerChoice === 'scissors'){
-                    console.log(`You Lose! ${computerChoice} beats ${playerChoice}!`);
+                    messageContainer.textContent = `You Lose! ${computerChoice} beats ${playerChoice}!`;
                     computerScore++;
                 } else if (computerChoice == 'rock'){
-                    console.log(`You Won! ${playerChoice} beats ${computerChoice}`);
+                    messageContainer.textContent = `You Won! ${playerChoice} beats ${computerChoice}`;
                     playerScore++;
                 }
                 
@@ -68,48 +69,38 @@ playRound = (playerChoice, computerChoice) => {
             case 'scissors':
 
                 if(computerChoice === 'rock'){
-                    console.log(`You Lose! ${computerChoice} beats ${playerChoice}!`);
+                    messageContainer.textContent = `You Lose! ${computerChoice} beats ${playerChoice}!`;
                     computerScore++;
                 } else if (computerChoice == 'paper'){
-                    console.log(`You Won! ${playerChoice} beats ${computerChoice}`);
+                    messageContainer.textContent = `You Won! ${playerChoice} beats ${computerChoice}`;
                     playerScore++;
                 }
 
                 break;
 
             default:
-                console.log('Invalid choice!');
+                messageContainer.textContent = 'Invalid choice!';
         }
     } else {
-        console.log(`DRAW! You both chose ${playerChoice}!`);
+        messageContainer.textContent = `DRAW! You both chose ${playerChoice}!`;
     }
 }
 
-game = () => {
-
-    for( let i=1; i<6; i++){
-        playerSelection = getPlayerChoice();
-        computerSelection = getComputerChoice();
-        playRound(playerSelection, computerSelection);
-        showResults(i);
+showScore = () => {
+    scoreContainer.textContent = `PLAYER = ${playerScore} | COMPUTER = ${computerScore}`;
+    if(playerScore === 5 || computerScore == 5){
+        showWinner();
     }
-
-    showWinner();
-    
-}
-
-showResults = (roundNumber) => {
-    console.log(`Round ${roundNumber} out of 5.`)
-    console.log(`Your score is ${playerScore} and computer's score is ${computerScore}`);
-    console.log('==========');
 }
 
 showWinner = () => {
     if(playerScore > computerScore){
-        console.log('CONGRATULATIONS! You WON!');
+        scoreContainer.textContent = 'CONGRATULATIONS! You WON!';
     } else {
-        console.log('GAME OVER! You LOST to Computer.');
+        scoreContainer.textContent ='GAME OVER! You LOST to Computer.';
     }
+    playerScore = 0;
+    computerScore = 0;
     
 }
 
@@ -118,4 +109,21 @@ let computerSelection;
 let playerScore = 0;
 let computerScore = 0;
 
-game();
+
+
+//create event listeners for every game button
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach((button) => {
+    button.addEventListener('click', function (e) {
+        playRound(e.originalTarget.id, getComputerChoice());
+        showScore();
+    });
+});
+
+const messageContainer = document.querySelector('#message-container');
+const scoreContainer = document.querySelector('#score-container');
+
+
+    
+
